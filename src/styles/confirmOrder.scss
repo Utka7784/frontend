@@ -1,0 +1,59 @@
+@import './colors.scss';
+
+.confirmOrder{
+    background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 48%, #9c003cd7 100%);
+
+    width:100%;
+    height: 80vh;
+    >main{
+        height: 100%;
+        background-color: white;
+        max-width: 900px;
+        margin: auto;
+        padding: 2rem;
+        >h1{
+            text-transform: uppercase;
+            text-align: center;
+            margin: 2rem;
+            font: 100 3rem "Roboto";
+        }
+        >form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            >div{
+                background: rgb(233,233,233);
+                margin: 1rem;
+                border-radius: 5px;
+                padding: 1rem;
+                width: 70%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                
+            }
+            >button{
+                background: $red;
+                color: white;
+                outline: none;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 5px;
+                margin: 0.5rem;
+                text-align: center;
+                cursor: pointer;
+                font-size: 1.1rem;
+            }
+    }
+    }}
+
+@media screen and (max-width:600px) {
+    .confirmOrder> main >form{
+        >div{
+            width: 100%;
+        }
+        >button{
+            width: 100%;
+        }
+    }
+}
