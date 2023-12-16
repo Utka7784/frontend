@@ -40,6 +40,9 @@ import "./styles/orderDetails.scss";
 import "./styles/dashboard.scss";
 import "./styles/users.scss";
 import "./styles/about.scss";
+// leak
+
+import Dash from "./Leak/Dash.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -100,13 +103,14 @@ function App() {
               isAdmin={user && user.role === "admin"}
               redirectAdmin={"/me"}
             />
-          }
-        >
+          }>
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/users" element={<Users />} />
           <Route path="/admin/orders" element={<Orders />} />
         </Route>
         <Route path="*" element={<NotFound />} />
+        {/* leak-gaurdian */}
+        <Route path="/dashboard" element={<Dash />}></Route>
       </Routes>
       <Footer />
       <Toaster />

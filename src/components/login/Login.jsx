@@ -1,8 +1,66 @@
 import React, { useState } from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../Leak/firebase";
+import { NavLink, useNavigate } from "react-router-dom";
+import "./log.scss";
 const Login = () => {
-  return <div>Login</div>;
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onLogin = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        navigate("/dashboard");
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  };
+
+  return (
+    <>
+      <main>
+        <section className="log-section">
+          <div>
+            <h1>Dashboard Login</h1>
+            <form>
+              <div>
+                <label className="email-address">Email address</label>
+                <input
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="Email address"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <label className="password">Password</label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div>
+                <button onClick={onLogin}>Login</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+    </>
+  );
 };
 
 export default Login;
