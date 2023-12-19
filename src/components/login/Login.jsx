@@ -1,60 +1,66 @@
-import React, { useState } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../Leak/firebase";
+import { NavLink, useNavigate } from "react-router-dom";
+import "./log.scss";
+const Login = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-const LoginForm = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = async (e) => {
+  const onLogin = (e) => {
     e.preventDefault();
-
-    try {
-      // Sign in with Firebase Authentication
-      const userCredential = await firebase.auth().signInWithEmailAndPassword(username, password);
-      const user = userCredential.user;
-
-      // Access Firestore data if needed
-      // const userData = await firebase.firestore().collection('users').doc(user.uid).get();
-      // console.log('User Data:', userData.data());
-
-      console.log('Login Successful:', user);
-    } catch (error) {
-      console.error('Login Error:', error.message);
-    }
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        navigate("/dashboard");
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-      </div>
-      <button type="submit">Login</button>
-    </form>
+    <>
+      <main>
+        <section className="log-section">
+          <div>
+            <h1>Dashboard Login</h1>
+            <form>
+              <div>
+                <label className="email-address">Email address</label>
+                <input
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="Email address"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <label className="password">Password</label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div>
+                <button onClick={onLogin}>Login</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+    </>
   );
 };
 
-export default LoginForm;
+export default Login;
